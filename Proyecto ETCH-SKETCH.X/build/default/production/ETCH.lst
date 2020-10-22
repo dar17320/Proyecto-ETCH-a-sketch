@@ -1,0 +1,834 @@
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;##################################### PABLO DARD”N ##############################
+                      00002 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 17320 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                      00003 ;¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥ PROYECTO ETCH A SKETCH ¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥
+                      00004 #include "p16f887.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Mar 17 2019
+                      00005 ;  MPASM PIC16F887 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2019 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00810         LIST
+                      00005 
+                      00006 ; CONFIG1
+                      00007 ; __config 0xFCD4
+2007   20D4           00008  __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _B
+                            OREN_OFF & _IESO_OFF & _FCMEN_OFF & _LVP_OFF
+                      00009 ; CONFIG2
+                      00010 ; __config 0xFFFF
+2008   3FFF           00011  __CONFIG _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
+                      00012  
+                      00013  
+                      00014 GPR_VAR     UDATA
+0000                  00015 ADC_value   RES 1
+0001                  00016 BANDERA     RES 1
+0002                  00017 BANDERITA   RES 1
+0003                  00018 BANDERAS    RES 1
+0004                  00019 BANDERITAS  RES 1
+                      00020 
+                      00021 
+                      00022 RES_VECT    CODE    0X0000
+0000   2???           00023     GOTO    SETUP
+                      00024    
+                      00025 MAIN_PROG CODE                      ; let linker place main program
+                      00026 
+0000                  00027 SETUP
+0000   2???           00028     CALL    CONFIG_OSCILATOR            ; configurar el oscilador a 4MHz
+0001   2???           00029     CALL    CONFIG_IO                   ; TRIS0 como entrada, ANSEL0 como anal√≥gica
+                      00030     ;CALL    CONFIG_ADC                 ; canal 0, fosc/8, adc on, justificado a la izquierda, Vref inte
+                            rno (0-5V)
+                      00031    
+0002                  00032 LOOP:
+0002   2???           00033     CALL    CONVERTIDORES
+0003   2???           00034     CALL    DELAY_500US                 ; delay 
+0004   149F           00035     BSF    ADCON0, GO                   ; EMPIECE LA CONVERSI√?N
+0005   189F           00036     BTFSC   ADCON0, GO                  ; revisa que termin√≥ la conversi√≥n
+0006   2???           00037     GOTO    $-1
+0007   081E           00038     MOVF    ADRESH, W
+0008   00??           00039     MOVWF   ADC_value
+0009   2???           00040     CALL    CONTBIN
+000A   2???           00041     GOTO    LOOP
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00042 ;------------------------------SUBRUTINAS---------------------------------------
+                      00043  
+000B                  00044 CONVERTIDORES:
+000B   1008           00045     BCF     PORTD, RD0
+000C   1088           00046     BCF     PORTD, RD1
+000D   1800           00047     BTFSC   BANDERA, 0
+000E   2???           00048     GOTO    CONVERTIDOR_1
+000F                  00049 CONVERTIDOR_0:
+000F   1488           00050     BSF     PORTD, RD1
+0010   2???           00051     GOTO    CONV_FIN
+0011                  00052 CONVERTIDOR_1:
+0011   1408           00053     BSF     PORTD, RD0
+0012   2???           00054     GOTO    CONV_FIN
+0013                  00055 CONV_FIN:    
+0013   2???           00056     CALL    CONV_B0
+0014   0008           00057     RETURN
+0015                  00058 CONV_B0:
+0015   1C00           00059     BTFSS   BANDERA, 0
+0016   2???           00060     GOTO    COG_0
+0017                  00061 COG_1:
+0017   1000           00062     BCF     BANDERA, 0
+0018   0008           00063     RETURN
+0019                  00064 COG_0:
+0019   1400           00065     BSF     BANDERA, 0
+001A   0008           00066     RETURN
+                      00067     
+001B                  00068 DELAY_500US:
+001B   0000           00069     NOP
+001C   0000           00070     NOP
+001D   0000           00071     NOP
+001E   0000           00072     NOP
+001F   0000           00073     NOP
+0020   0000           00074     NOP
+0021   0000           00075     NOP
+0022   0000           00076     NOP
+0023   0000           00077     NOP
+0024   0000           00078     NOP
+0025   0008           00079     RETURN
+                      00080 ;----------------------------CONFIGURACIONES----------------------------------    
+0026                  00081 CONFIG_IO:
+0026   1683 1303      00082     BANKSEL TRISA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0028   0185           00083     CLRF    TRISA
+Message[305]: Using default destination of 1 (file).
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0029   0985           00084     COMF    TRISA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+002A   0186           00085     CLRF    TRISB
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+002B   0187           00086     CLRF    TRISC
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+002C   0188           00087     CLRF    TRISD
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002D   0189           00088     CLRF    TRISE
+002E   1683 1703      00089     BANKSEL ANSEL
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0030   0188           00090     CLRF    ANSEL
+Message[305]: Using default destination of 1 (file).
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0031   0988           00091     COMF    ANSEL
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0032   0189           00092     CLRF    ANSELH
+0033   1283 1303      00093     BANKSEL PORTA
+0035   0185           00094     CLRF    PORTA
+0036   0186           00095     CLRF    PORTB
+0037   0187           00096     CLRF    PORTC
+0038   0188           00097     CLRF    PORTD
+0039   0008           00098     RETURN
+                      00099 
+003A                  00100 CONFIG_ADC0:
+003A   1683 1303      00101     BANKSEL ADCON1
+003C   3000           00102     MOVLW   B'00000000'                 ;4Mhz oscilador
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+003D   009F           00103     MOVWF   ADCON1
+003E   1283 1303      00104     BANKSEL ADCON0
+0040   3001           00105     MOVLW   B'00000001'                 ;RA0 Y RA1 COMO ENTRADA
+0041   009F           00106     MOVWF   ADCON0
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0042   1408           00107     BSF     ANSEL,0                     ;RA0 COMO ANAL”GICO
+0043   0008           00108     RETURN
+                      00109 
+                      00110     
+0044                  00111 CONFIG_ADC1:
+0044   1683 1303      00112     BANKSEL ADCON1
+0046   3000           00113     MOVLW   B'00000000'                 ;4Mhz oscilador
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0047   009F           00114     MOVWF   ADCON1
+0048   1283 1303      00115     BANKSEL ADCON0
+004A   3001           00116     MOVLW   B'00000001'                 ;RA0 Y RA1 COMO ENTRADA
+004B   009F           00117     MOVWF   ADCON0
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+004C   1488           00118     BSF     ANSEL,1                     ;RA1 COMO ANAL”GICO
+004D   0008           00119     RETURN    
+                      00120     
+004E                  00121 CONFIG_OSCILATOR:
+004E   1683 1303      00122     BANKSEL OSCCON
+0050   30C1           00123     MOVLW   B'11000001'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0051   008F           00124     MOVWF   OSCCON
+0052   0008           00125     RETURN
+                      00126  
+                      00127     
+0053                  00128 CONTBIN:
+0053   08??           00129     MOVFW   ADC_value
+0054   2???           00130     CALL    TABLA
+0055   0087           00131     MOVWF   PORTC
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00132 
+0056                  00133 TABLA:                                  ;Tabla para codificar valores binarios a display para display de
+                             anodo comun. 
+Message[305]: Using default destination of 1 (file).
+0056   0782           00134     ADDWF   PCL
+0057   34C0           00135     RETLW   B'11000000' ;0
+0058   34F9           00136     RETLW   B'11111001' ;1
+0059   34A4           00137     RETLW   B'10100100' ;2
+005A   34B0           00138     RETLW   B'10110000' ;3
+005B   3499           00139     RETLW   B'10011001' ;4
+005C   3492           00140     RETLW   B'10010010' ;5
+005D   3482           00141     RETLW   B'10000010' ;6
+005E   34F8           00142     RETLW   B'11111000' ;7
+005F   3480           00143     RETLW   B'10000000' ;8
+0060   3490           00144     RETLW   B'10010000' ;9
+                      00145 
+                      00146 
+                      00147 
+                      00148 
+                      00149 
+                      00150 
+                      00151 
+                      00152 
+                      00153 
+                      00154 
+                      00155 
+                      00156 
+                      00157 
+                      00158 
+                      00159 
+                      00160 
+Warning[205]: Found directive in column 1. (END)
+20D4 3FFF             00161 END
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ABDEN                             00000000
+ABDOVF                            00000007
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADC_value                         00000000
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+ANS0                              00000000
+ANS1                              00000001
+ANS10                             00000002
+ANS11                             00000003
+ANS12                             00000004
+ANS13                             00000005
+ANS2                              00000002
+ANS3                              00000003
+ANS4                              00000004
+ANS5                              00000005
+ANS6                              00000006
+ANS7                              00000007
+ANS8                              00000000
+ANS9                              00000001
+ANSEL                             00000188
+ANSELH                            00000189
+BANDERA                           00000001
+BANDERAS                          00000003
+BANDERITA                         00000002
+BANDERITAS                        00000004
+BAUDCTL                           00000187
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRG0                              00000000
+BRG1                              00000001
+BRG10                             00000002
+BRG11                             00000003
+BRG12                             00000004
+BRG13                             00000005
+BRG14                             00000006
+BRG15                             00000007
+BRG16                             00000003
+BRG2                              00000002
+BRG3                              00000003
+BRG4                              00000004
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BRG5                              00000005
+BRG6                              00000006
+BRG7                              00000007
+BRG8                              00000000
+BRG9                              00000001
+BRGH                              00000002
+C                                 00000000
+C1CH0                             00000000
+C1CH1                             00000001
+C1IE                              00000005
+C1IF                              00000005
+C1OE                              00000005
+C1ON                              00000007
+C1OUT                             00000006
+C1POL                             00000004
+C1R                               00000002
+C1RSEL                            00000005
+C1SEN                             00000005
+C2CH0                             00000000
+C2CH1                             00000001
+C2IE                              00000006
+C2IF                              00000006
+C2OE                              00000005
+C2ON                              00000007
+C2OUT                             00000006
+C2POL                             00000004
+C2R                               00000002
+C2REN                             00000004
+C2RSEL                            00000004
+C2SYNC                            00000000
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CCPR2L                            0000001B
+CHS0                              00000002
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+CKE                               00000006
+CKP                               00000004
+CM1CON0                           00000107
+CM2CON0                           00000108
+CM2CON1                           00000109
+COG_0                             00000019
+COG_1                             00000017
+CONFIG_ADC0                       0000003A
+CONFIG_ADC1                       00000044
+CONFIG_IO                         00000026
+CONFIG_OSCILATOR                  0000004E
+CONTBIN                           00000053
+CONVERTIDORES                     0000000B
+CONVERTIDOR_0                     0000000F
+CONVERTIDOR_1                     00000011
+CONV_B0                           00000015
+CONV_FIN                          00000013
+CREN                              00000004
+CSRC                              00000007
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DC1B0                             00000004
+DC1B1                             00000005
+DC2B0                             00000004
+DC2B1                             00000005
+DELAY_500US                       0000001B
+D_A                               00000005
+D_NOT_A                           00000005
+ECCPAS                            0000009C
+ECCPAS0                           00000004
+ECCPAS1                           00000005
+ECCPAS2                           00000006
+ECCPASE                           00000007
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDAT                             0000010C
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+FVREN                             00000000
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+GCEN                              00000007
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+HTS                               00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IOCB                              00000096
+IOCB0                             00000000
+IOCB1                             00000001
+IOCB2                             00000002
+IOCB3                             00000003
+IOCB4                             00000004
+IOCB5                             00000005
+IOCB6                             00000006
+IOCB7                             00000007
+IRCF0                             00000004
+IRCF1                             00000005
+IRCF2                             00000006
+IRP                               00000007
+LOOP                              00000002
+LTS                               00000001
+MC1OUT                            00000007
+MC2OUT                            00000006
+MSK                               00000093
+MSK0                              00000000
+MSK1                              00000001
+MSK2                              00000002
+MSK3                              00000003
+MSK4                              00000004
+MSK5                              00000005
+MSK6                              00000006
+MSK7                              00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000001
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OERR                              00000001
+OPTION_REG                        00000081
+OSCCON                            0000008F
+OSCTUNE                           00000090
+OSFIE                             00000007
+OSFIF                             00000007
+OSTS                              00000003
+P                                 00000004
+P1M0                              00000006
+P1M1                              00000007
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PDC0                              00000000
+PDC1                              00000001
+PDC2                              00000002
+PDC3                              00000003
+PDC4                              00000004
+PDC5                              00000005
+PDC6                              00000006
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PRSEN                             00000007
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSSAC0                            00000002
+PSSAC1                            00000003
+PSSBD0                            00000000
+PSSBD1                            00000001
+PSTRCON                           0000009D
+PULSR                             00000002
+PULSS                             00000003
+PWM1CON                           0000009B
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIDL                             00000006
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+RE3                               00000003
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SBOREN                            00000004
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SCKP                              00000004
+SCS                               00000000
+SEN                               00000000
+SENDB                             00000003
+SETUP                             00000000
+SMP                               00000007
+SPBRG                             00000099
+SPBRGH                            0000009A
+SPEN                              00000007
+SR0                               00000006
+SR1                               00000007
+SRCON                             00000185
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPMSK                            00000093
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STRA                              00000000
+STRB                              00000001
+STRC                              00000002
+STRD                              00000003
+STRSYNC                           00000004
+SWDTEN                            00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1GINV                            00000007
+T1GIV                             00000007
+T1GSS                             00000001
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TABLA                             00000056
+TMR0                              00000001
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISA6                            00000006
+TRISA7                            00000007
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRISE3                            00000003
+TRMT                              00000001
+TUN0                              00000000
+TUN1                              00000001
+TUN2                              00000002
+TUN3                              00000003
+TUN4                              00000004
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+ULPWUE                            00000005
+ULPWUIE                           00000002
+ULPWUIF                           00000002
+VCFG0                             00000004
+VCFG1                             00000005
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000097
+VREN                              00000007
+VROE                              00000006
+VRR                               00000005
+VRSS                              00000004
+W                                 00000000
+WCOL                              00000007
+WDTCON                            00000105
+WDTPS0                            00000001
+WDTPS1                            00000002
+WDTPS2                            00000003
+WDTPS3                            00000004
+WPUB                              00000095
+WPUB0                             00000000
+WPUB1                             00000001
+WPUB2                             00000002
+WPUB3                             00000003
+WPUB4                             00000004
+WPUB5                             00000005
+WPUB6                             00000006
+WPUB7                             00000007
+WR                                00000001
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WREN                              00000002
+WRERR                             00000003
+WUE                               00000001
+Z                                 00000002
+_BOR21V                           00003EFF
+_BOR40V                           00003FFF
+_BOR4V_BOR21V                     00003EFF
+_BOR4V_BOR40V                     00003FFF
+_BOREN_NSLEEP                     00003EFF
+_BOREN_OFF                        00003CFF
+_BOREN_ON                         00003FFF
+_BOREN_SBODEN                     00003DFF
+_BOR_NSLEEP                       00003EFF
+_BOR_OFF                          00003CFF
+_BOR_ON                           00003FFF
+_BOR_SBODEN                       00003DFF
+_CONFIG1                          00002007
+_CONFIG2                          00002008
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003F7F
+_CP_OFF                           00003FFF
+_CP_ON                            00003FBF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         00001FFF
+_DEVID1                           00002006
+_EC_OSC                           00003FFB
+_EXTRC                            00003FFF
+_EXTRCIO                          00003FFE
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_FCMEN_OFF                        000037FF
+_FCMEN_ON                         00003FFF
+_FOSC_EC                          00003FFB
+_FOSC_EXTRC_CLKOUT                00003FFF
+_FOSC_EXTRC_NOCLKOUT              00003FFE
+_FOSC_HS                          00003FFA
+_FOSC_INTRC_CLKOUT                00003FFD
+_FOSC_INTRC_NOCLKOUT              00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_HS_OSC                           00003FFA
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_IESO_OFF                         00003BFF
+_IESO_ON                          00003FFF
+_INTOSC                           00003FFD
+_INTOSCIO                         00003FFC
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_LVP_OFF                          00002FFF
+MPASM 5.84                          ETCH.ASM   10-22-2020  8:08:33         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_LVP_ON                           00003FFF
+_MAIN_PROG_0006                   00000006
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_WDTE_OFF                         00003FF7
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FF9
+__16F887                          00000001
+
+Errors   :     0
+Warnings :     1 reported,     0 suppressed
+Messages :    17 reported,     0 suppressed
+
+
