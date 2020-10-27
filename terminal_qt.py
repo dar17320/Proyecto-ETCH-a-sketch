@@ -12,8 +12,8 @@ WIN_WIDTH, WIN_HEIGHT = 700, 400    # Window size
 SER_TIMEOUT = 0.1                   # Timeout for serial Rx
 RETURN_CHAR = "\n"                  # Char to be sent when Enter key pressed
 PASTE_CHAR  = "\x16"                # Ctrl code for clipboard paste
-baudrate    = 9600                  # Default baud rate
-portname    = "COM6"                # Default port name
+baudrate    = 10417                  # Default baud rate
+portname    = "COM3"                # Default port name
 hexmode     = False                 # Flag to enable hex display
  
 # Convert a string to bytes
