@@ -13,6 +13,7 @@
  
 GPR_VAR	    UDATA
 ADC		RES	1
+ADCS		RES	1
 W_TEMP		RES	1
 STATUS_TEMP	RES	1
 DISPLAY_LOW1	RES	1
@@ -61,7 +62,9 @@ START:
     CALL    CONFIG_OSCILATOR
     CALL    CONFIG_IO
     CALL    CONFIG_ADC			; canal 0, fosc/8, adc on, justificado a la izquierda, Vref interno (0-5V)
-;    CALL    CONFIG_TMR0
+    CALL    CONFIG_TX_RX		; 10417hz
+
+    ;    CALL    CONFIG_TMR0
 ;    CALL    CONFIG_INTERRUPT
 
 LOOP:
@@ -73,6 +76,18 @@ LOOP:
     MOVWF   ADC
     CALL    VALORDISP
     CALL    DISPLAY
+    CHECK_RCIF:			    ; RECIBE EN RX y lo muestra en PORTD
+    BTFSS   PIR1, RCIF
+    GOTO    CHECK_TXIF
+    MOVF    RCREG, W
+    MOVWF   ADCS
+    
+CHECK_TXIF: 
+    MOVFW   ADC		    ; ENVÍA PORTB POR EL TX
+    MOVWF   TXREG
+   
+    BTFSS   PIR1, TXIF
+    GOTO    $-1
     GOTO    LOOP
 
 CONFIG_IO:
@@ -107,25 +122,27 @@ CONFIG_OSCILATOR:
     MOVWF   OSCCON
     RETURN
 
-;CONFIG_TMR0:
-;    BANKSEL OPTION_REG
-;    BCF	    OPTION_REG, T0CS    ;CICLO DE MAQUINA - 
-;    BCF	    OPTION_REG, PSA     ;PRESCALER 8 BITS
-;    BSF	    OPTION_REG, PS2
-;    BSF	    OPTION_REG, PS1
-;    BSF	    OPTION_REG, PS0
-;    BANKSEL TMR0
-;    MOVLW   .12
-;    MOVWF   TMR0
-;    BCF	    INTCON, T0IF
- ;   RETURN
-     
-;CONFIG_INTERRUPT:
-;    BSF	    INTCON, GIE
-;    BSF	    INTCON, T0IE
-;    BCF	    INTCON, T0IF
-;    RETURN    
+CONFIG_TX_RX:
+    BANKSEL TXSTA
+    BCF	    TXSTA, SYNC		    ; ASINCRÓNO
+    BSF	    TXSTA, BRGH		    ; LOW SPEED
+    BANKSEL BAUDCTL
+    BSF	    BAUDCTL, BRG16	    ; 8 BITS BAURD RATE GENERATOR
+    BANKSEL SPBRG
+    MOVLW   .25	    
+    MOVWF   SPBRG		    ; CARGAMOS EL VALOR DE BAUDRATE CALCULADO
+    CLRF    SPBRGH
+    BANKSEL RCSTA
+    BSF	    RCSTA, SPEN		    ; HABILITAR SERIAL PORT
+    BCF	    RCSTA, RX9		    ; SOLO MANEJAREMOS 8BITS DE DATOS
+    BSF	    RCSTA, CREN		    ; HABILITAMOS LA RECEPCIÓN 
+    BANKSEL TXSTA
+    BSF	    TXSTA, TXEN		    ; HABILITO LA TRANSMISION
     
+    BANKSEL PORTD
+    CLRF    PORTD
+    RETURN
+
     
 ;////////////////////////////////////// FUNCIONES DE LOOP ///////////////////////////////////////////////////////////
 
@@ -162,20 +179,20 @@ SEPARAR:
    RETURN
 
 DISPLAY:
-    CLRF    PORTD
+    CLRF    PORTB
     BTFSC   BANDERAS, 0
     GOTO    DISPLAY_1
 DISPLAY_0:
     MOVF    DISPLAY_LOW1, W
     CALL    TABLA_7SEG
-    MOVWF   PORTC
-    BSF	    PORTD, RD0			;selecciona el display
+    MOVWF   PORTD
+    BSF	    PORTB, RB0			;selecciona el display
     GOTO    DISP_FINA
 DISPLAY_1:
     MOVF    DISPLAY_HIGH1, W
     CALL    TABLA_7SEG
-    MOVWF   PORTC
-    BSF	    PORTD, RD1
+    MOVWF   PORTD
+    BSF	    PORTB, RB1
     GOTO    DISP_FINA
 DISP_FINA:    
     CALL    TOGGLE_A0
