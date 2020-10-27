@@ -16,30 +16,24 @@ baudrate    = 10417                  # Default baud rate
 portname    = "COM3"                # Default port name
 hexmode     = False                 # Flag to enable hex display
  
-# Convert a string to bytes
 def str_bytes(s):
     return s.encode('latin-1')
      
-# Convert bytes to string
 def bytes_str(d):
     return d if type(d) is str else "".join([chr(b) for b in d])
      
-# Return hexadecimal values of data
 def hexdump(data):
     return " ".join(["%02X" % ord(b) for b in data])
  
-# Return a string with high-bit chars replaced by hex values
 def textdump(data):
     return "".join(["[%02X]" % ord(b) if b>'\x7e' else b for b in data])
      
-# Display incoming serial data
 def display(s):
     if not hexmode:
         sys.stdout.write(textdump(str(s)))
     else:
         sys.stdout.write(hexdump(s) + ' ')
  
-# Custom text box, catching keystrokes
 class MyTextBox(QTextEdit):
     def __init__(self, *args): 
         QTextEdit.__init__(self, *args)
@@ -47,7 +41,6 @@ class MyTextBox(QTextEdit):
     def keyPressEvent(self, event):     # Send keypress to parent's handler
         self.parent().keypress_handler(event)
              
-# Main widget            
 class MyWidget(QWidget):
     text_update = QtCore.pyqtSignal(str)
          
@@ -97,7 +90,6 @@ class MyWidget(QWidget):
         self.serth.running = False              # Wait until serial thread terminates
         self.serth.wait()
          
-# Thread to handle incoming & outgoing serial data
 class SerialThread(QtCore.QThread):
     def __init__(self, portname, baudrate): # Initialise with serial port details
         QtCore.QThread.__init__(self)
