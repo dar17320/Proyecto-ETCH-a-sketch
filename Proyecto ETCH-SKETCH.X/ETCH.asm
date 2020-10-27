@@ -64,18 +64,17 @@ START:
     CALL    CONFIG_ADC			; canal 0, fosc/8, adc on, justificado a la izquierda, Vref interno (0-5V)
     CALL    CONFIG_TX_RX		; 10417hz
 
-    ;    CALL    CONFIG_TMR0
-;    CALL    CONFIG_INTERRUPT
-
 LOOP:
     CALL    DELAY
     BSF	    ADCON0, GO
     BTFSC   ADCON0, GO
     GOTO    $-1
+    BCF	    PIR1, ADIF			; borramos la bandera del adc
     MOVFW   ADRESH
     MOVWF   ADC
     CALL    VALORDISP
     CALL    DISPLAY
+    
     CHECK_RCIF:			    ; RECIBE EN RX y lo muestra en PORTD
     BTFSS   PIR1, RCIF
     GOTO    CHECK_TXIF

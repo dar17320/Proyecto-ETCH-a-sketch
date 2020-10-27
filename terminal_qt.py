@@ -8,7 +8,7 @@ except:
     import queue as Queue
 import sys, time, serial
  
-WIN_WIDTH, WIN_HEIGHT = 684, 400    # Window size
+WIN_WIDTH, WIN_HEIGHT = 700, 400    # Window size
 SER_TIMEOUT = 0.1                   # Timeout for serial Rx
 RETURN_CHAR = "\n"                  # Char to be sent when Enter key pressed
 PASTE_CHAR  = "\x16"                # Ctrl code for clipboard paste
