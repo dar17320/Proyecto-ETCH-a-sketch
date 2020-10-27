@@ -1,0 +1,95 @@
+MPLINK 5.09, LINKER
+Linker Map File - Created Mon Oct 26 23:31:37 2020
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                 RES_VECT       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                 ISR_VECT       code   0x000004    program   0x000010
+                MAIN_PROG       code   0x00000c    program   0x0000c6
+.config_2007_BUILD/DEFAULT/DEBUG/ETCH.O       code   0x002007    program   0x000002
+.config_2008_BUILD/DEFAULT/DEBUG/ETCH.O       code   0x002008    program   0x000002
+                  GPR_VAR      udata   0x000020       data   0x000009
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x00006e      
+                            0x002007    0x002008      
+            112 out of 8455 program addresses used, program memory utilization is 1%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+               CONFIG_ADC   0x000029    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                CONFIG_IO   0x000017    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+         CONFIG_OSCILATOR   0x000032    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                    DELAY   0x000037    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                  DISPLAY   0x00004f    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                DISPLAY_0   0x000052    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                DISPLAY_1   0x000057    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                DISP_FINA   0x00005c    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                      ISR   0x000007    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                     LOOP   0x00000f    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                      POP   0x000007    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                     PUSH   0x000004    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                  SEPARAR   0x000046    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                    START   0x00000c    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+               TABLA_7SEG   0x000064    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                TOGGLE_A0   0x00005e    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                   TOG_A0   0x000062    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                   TOG_A1   0x000060    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                VALORDISP   0x000042    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+          _MAIN_PROG_0006   0x000012    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                      ADC   0x000020       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                 BANDERAS   0x000028       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+            DISPLAY_HIGH1   0x000024       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+             DISPLAY_LOW1   0x000023       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                     EJE1   0x000026       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                     EJE2   0x000027       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+              STATUS_TEMP   0x000022       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+             VAR_DISPLAY1   0x000025       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                   W_TEMP   0x000021       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     PUSH   0x000004    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                      POP   0x000007    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                      ISR   0x000007    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                    START   0x00000c    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                     LOOP   0x00000f    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+          _MAIN_PROG_0006   0x000012    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                CONFIG_IO   0x000017    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+               CONFIG_ADC   0x000029    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+         CONFIG_OSCILATOR   0x000032    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                    DELAY   0x000037    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                VALORDISP   0x000042    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                  SEPARAR   0x000046    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                  DISPLAY   0x00004f    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                DISPLAY_0   0x000052    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                DISPLAY_1   0x000057    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                DISP_FINA   0x00005c    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                TOGGLE_A0   0x00005e    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                   TOG_A1   0x000060    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                   TOG_A0   0x000062    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+               TABLA_7SEG   0x000064    program     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                      ADC   0x000020       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                   W_TEMP   0x000021       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+              STATUS_TEMP   0x000022       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+             DISPLAY_LOW1   0x000023       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+            DISPLAY_HIGH1   0x000024       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+             VAR_DISPLAY1   0x000025       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                     EJE1   0x000026       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                     EJE2   0x000027       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+                 BANDERAS   0x000028       data     static C:\Users\PabloDavid\Documents\TAREAS UVG\VIII Semestre\Programación de microcontroladores\Proyecto sketch\Proyecto-ETCH-a-sketch\Proyecto ETCH-SKETCH.X\ETCH.asm
+
+
